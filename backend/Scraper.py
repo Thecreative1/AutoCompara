@@ -13,7 +13,7 @@ TEMPO_ESPERA = 10
 
 # Setup do Chrome
 options = Options()
-# options.add_argument("--headless")
+options.add_argument("--headless=new")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 driver = webdriver.Chrome(options=options)
@@ -21,9 +21,15 @@ wait = WebDriverWait(driver, TEMPO_ESPERA)
 
 def obter_marcas():
     driver.get(LISTAGEM_URL)
-    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "ul.listing__makes li a")))
-    elementos = driver.find_elements(By.CSS_SELECTOR, "ul.listing__makes li a")
-    marcas = [(el.text.strip(), el.get_attribute("href")) for el in elementos if el.text.strip()]
+    wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a[data-testid='filters-list-item-link']")))
+    elementos = driver.find_elements(By.CSS_SELECTOR, "a[data-testid='filters-list-item-link']")
+    
+    marcas = []
+    for el in elementos:
+        href = el.get_attribute("href")
+        nome = el.text.strip()
+        if "/carros/" in href and nome:
+            marcas.append((nome, href))
     return marcas
 
 def obter_links_carros(url_marca):
@@ -53,11 +59,9 @@ def extrair_detalhes(link):
         titulo = driver.find_element(By.TAG_NAME, "h1").text.strip()
         preco = driver.find_element(By.CSS_SELECTOR, "[class*='offer-price']").text.strip()
 
-        # Validar se o preço é válido
         if preco.lower() in ["n/d", "sob consulta", ""]:
             return None
 
-        # Localização (tentamos várias formas)
         try:
             localizacao = driver.find_element(By.CSS_SELECTOR, "[class*='seller-contact-location']").text.strip()
         except:
