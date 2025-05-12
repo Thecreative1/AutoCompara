@@ -27,8 +27,9 @@ public class Scraper {
                     link = "https://www.standvirtual.com" + link;
                 }
 
-                // ⬇️ NOVO: Extração do preço
+                // Extração protegida do preço
                 String preco = anuncio.select("div[data-testid=advert-price]").text();
+                if (preco.isEmpty()) preco = "n/d";
 
                 if (!titulo.isEmpty()) {
                     HashMap<String, String> carro = new HashMap<>();
@@ -46,7 +47,7 @@ public class Scraper {
             gson.toJson(carros, writer);
             writer.close();
 
-            System.out.println("✅ Anúncios exportados com sucesso para frontend/data.json!");
+            System.out.println("✅ Anúncios exportados com sucesso para data.json!");
 
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
