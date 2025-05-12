@@ -14,7 +14,11 @@ fetch("data.json")
 
     function calcularEstatisticas(lista) {
       const precos = lista
-        .map(c => parseFloat(c.preco.replace(/[^\d,]/g, '').replace(',', '.')))
+        .map(c => {
+  if (!c.preco) return NaN;
+  return parseFloat(c.preco.replace(/\s/g, '').replace(/[^\d.,]/g, '').replace(',', '.'));
+})
+
         .filter(p => !isNaN(p));
 
       if (precos.length === 0) return "Sem preços disponíveis.";
