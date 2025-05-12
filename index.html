@@ -3,40 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <title>AutoCompara - Comparador de Carros Usados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<canvas id="graficoPrecos" style="max-width: 800px; margin: 40px auto; display: block;"></canvas>
 <body>
 
-<header style="background: linear-gradient(135deg, #7CBF8B, #F2C078); color: white; padding: 50px 20px; text-align: center;">
-  <h1 style="font-size: 2.5rem; margin-bottom: 15px;">Encontre o carro ideal para si</h1>
-  <p style="font-size: 1.2rem; margin-bottom: 25px;">Compare os melhores preços em carros usados em Portugal.</p>
+  <header style="background: linear-gradient(135deg, #7CBF8B, #F2C078); color: white; padding: 50px 20px; text-align: center;">
+    <h1 style="font-size: 2.5rem; margin-bottom: 15px;">Encontre o carro ideal para si</h1>
+    <p style="font-size: 1.2rem; margin-bottom: 25px;">Compare os melhores preços em carros usados em Portugal.</p>
 
-  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-    <input id="pesquisa" type="text" placeholder="🔍 Procurar por marca ou modelo..."
-           style="padding: 15px; width: 60%; max-width: 500px; border: none; border-radius: 30px; font-size: 1rem;">
-    <button style="padding: 15px 25px; border: none; border-radius: 30px; background-color: #E07A5F; color: white; font-weight: bold; cursor: pointer;">
-      Procurar
-    </button>
-  </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+      <input id="pesquisa" type="text" placeholder="🔍 Procurar por marca ou modelo..."
+             style="padding: 15px; width: 60%; max-width: 500px; border: none; border-radius: 30px; font-size: 1rem;">
+      <!-- Botão ainda sem função, pode ser escondido -->
+      <button style="padding: 15px 25px; border: none; border-radius: 30px; background-color: #E07A5F; color: white; font-weight: bold; cursor: pointer;">
+        Procurar
+      </button>
+    </div>
 
-  <div style="margin-top: 30px;">
-    <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
-      SUV
-    </button>
-    <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
-      Sedan
-    </button>
-    <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
-      Elétrico
-    </button>
-  </div>
-</header>
-
-
+    <div style="margin-top: 30px;">
+      <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
+        SUV
+      </button>
+      <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
+        Sedan
+      </button>
+      <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
+        Elétrico
+      </button>
+    </div>
+  </header>
 
   <main style="padding: 30px; max-width: 1000px; margin: 0 auto;">
+    <canvas id="graficoPrecos" style="max-width: 800px; margin: 40px auto; display: block;"></canvas>
+
     <div id="car-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
       <!-- Resultados dos carros aparecem aqui -->
     </div>
