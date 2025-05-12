@@ -2,18 +2,32 @@ fetch("data.json")
   .then(response => response.json())
   .then(data => {
     const container = document.getElementById("car-list");
-
-    // Input de pesquisa
     const searchInput = document.getElementById("pesquisa");
-    searchInput.type = "text";
-    searchInput.placeholder = "🔍 Procurar por marca ou modelo...";
-    searchInput.style.padding = "10px";
-    searchInput.style.marginBottom = "20px";
-    searchInput.style.width = "100%";
-    container.before(searchInput);
+
+    const estatisticasBox = document.createElement("div");
+    estatisticasBox.id = "estatisticas";
+    estatisticasBox.style.margin = "20px 0";
+    container.before(estatisticasBox);
+
+    function calcularEstatisticas(lista) {
+      const precos = lista
+        .map(c => parseFloat(c.preco.replace(/[^\d,]/g, '').replace(',', '.')))
+        .filter(p => !isNaN(p));
+
+      if (precos.length === 0) return "Sem preços disponíveis.";
+
+      const soma = precos.reduce((a, b) => a + b, 0);
+      const media = soma / precos.length;
+      const min = Math.min(...precos);
+      const max = Math.max(...precos);
+
+      return `🔢 ${lista.length} resultados encontrados | 💰 Preço médio: ${media.toFixed(0)}€ | Mín: ${min}€ | Máx: ${max}€`;
+    }
 
     function renderCars(filteredData) {
       container.innerHTML = "";
+      estatisticasBox.innerText = calcularEstatisticas(filteredData);
+
       filteredData.forEach(car => {
         const item = document.createElement("div");
         item.innerHTML = `
