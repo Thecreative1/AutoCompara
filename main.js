@@ -4,7 +4,7 @@ fetch("data.json")
     const container = document.getElementById("car-list");
 
     // Input de pesquisa
-    const searchInput = document.createElement("input");
+    const searchInput = document.getElementById("pesquisa");
     searchInput.type = "text";
     searchInput.placeholder = "🔍 Procurar por marca ou modelo...";
     searchInput.style.padding = "10px";

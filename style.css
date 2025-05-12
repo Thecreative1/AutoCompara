@@ -6,20 +6,42 @@ body {
 }
 
 h1 {
-  color: #007acc;
+  color: #006699;
   margin-bottom: 10px;
 }
 
 #car-list {
   margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 
+/* CARD DO CARRO */
 #car-list div {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 8px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  transition: transform 0.2s;
+}
+
+#car-list div:hover {
+  transform: translateY(-5px);
+}
+
+#car-list h3 {
+  margin-top: 0;
+  color: #006699;
+}
+
+#car-list p {
+  color: #333;
+  margin: 5px 0;
+}
+
+#car-list a {
+  color: #D99A6C;
+  text-decoration: none;
+  font-weight: bold;
 }

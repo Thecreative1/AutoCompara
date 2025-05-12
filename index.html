@@ -6,12 +6,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>AutoCompara 🚗</h1>
-  <p>Comparador de preços de carros usados de sites como OLX e Standvirtual.</p>
 
-  <div id="car-list">
-    <!-- Resultados dos carros aparecem aqui -->
-  </div>
+<header style="background: #8FCB9B; color: white; padding: 40px 20px; text-align: center;">
+  <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Encontre o carro ideal para si</h1>
+  <p style="font-size: 1.2rem; margin-bottom: 20px;">Compare preços e descubra oportunidades únicas em segundos.</p>
+  <input id="pesquisa" type="text" placeholder="🔍 Procurar por marca ou modelo..." 
+         style="padding: 15px; width: 80%; max-width: 600px; border: none; border-radius: 10px;">
+</header>
+
+
+  <main style="padding: 30px; max-width: 1000px; margin: 0 auto;">
+    <div id="car-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+      <!-- Resultados dos carros aparecem aqui -->
+    </div>
+  </main>
 
   <script src="main.js"></script>
 </body>
