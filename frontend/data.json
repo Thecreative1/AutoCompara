@@ -1,0 +1,14 @@
+[
+  {
+    "titulo": "BMW 118i 2010",
+    "preco": "7.500€",
+    "localizacao": "Lisboa",
+    "link": "https://olx.pt/anuncio/exemplo1"
+  },
+  {
+    "titulo": "Peugeot 308 2012",
+    "preco": "6.900€",
+    "localizacao": "Porto",
+    "link": "https://standvirtual.com/anuncio/exemplo2"
+  }
+]
