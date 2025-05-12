@@ -1,8 +1,11 @@
+let chart = null;
+
 fetch("data.json")
   .then(response => response.json())
   .then(data => {
     const container = document.getElementById("car-list");
     const searchInput = document.getElementById("pesquisa");
+    const canvas = document.getElementById("graficoPrecos");
 
     const estatisticasBox = document.createElement("div");
     estatisticasBox.id = "estatisticas";
@@ -24,9 +27,50 @@ fetch("data.json")
       return `🔢 ${lista.length} resultados encontrados | 💰 Preço médio: ${media.toFixed(0)}€ | Mín: ${min}€ | Máx: ${max}€`;
     }
 
+    function atualizarGrafico(precos) {
+      const dados = precos
+        .map(p => parseFloat(p.preco.replace(/[^\d,]/g, '').replace(',', '.')))
+        .filter(p => !isNaN(p));
+
+      const bins = {};
+      dados.forEach(p => {
+        const faixa = Math.floor(p / 1000) * 1000;
+        bins[faixa] = (bins[faixa] || 0) + 1;
+      });
+
+      const labels = Object.keys(bins).sort((a, b) => a - b);
+      const valores = labels.map(k => bins[k]);
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: labels.map(l => `${l}€ - ${parseInt(l) + 999}€`),
+          datasets: [{
+            label: 'Nº de anúncios',
+            data: valores,
+            backgroundColor: '#7CBF8B'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+      });
+    }
+
     function renderCars(filteredData) {
       container.innerHTML = "";
       estatisticasBox.innerText = calcularEstatisticas(filteredData);
+      atualizarGrafico(filteredData);
 
       filteredData.forEach(car => {
         const item = document.createElement("div");
