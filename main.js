@@ -1,98 +1,51 @@
-let chart = null;
+let carros = [];
 
-fetch("data.json")
-  .then(response => response.json())
-  .then(data => {
-    const container = document.getElementById("car-list");
-    const searchInput = document.getElementById("pesquisa");
-    const canvas = document.getElementById("graficoPrecos");
+async function carregarDados() {
+  const resposta = await fetch("data.json");
+  carros = await resposta.json();
 
-    const estatisticasBox = document.createElement("div");
-    estatisticasBox.id = "estatisticas";
-    estatisticasBox.style.margin = "20px 0";
-    container.before(estatisticasBox);
+  const marcas = [...new Set(carros.map(carro => carro.marca))].sort();
+  const select = document.getElementById("marca");
 
-    function calcularEstatisticas(lista) {
-      const precos = lista
-        .map(c => {
-  if (!c.preco) return NaN;
-  return parseFloat(c.preco.replace(/\s/g, '').replace(/[^\d.,]/g, '').replace(',', '.'));
-})
-
-        .filter(p => !isNaN(p));
-
-      if (precos.length === 0) return "Sem preços disponíveis.";
-
-      const soma = precos.reduce((a, b) => a + b, 0);
-      const media = soma / precos.length;
-      const min = Math.min(...precos);
-      const max = Math.max(...precos);
-
-      return `🔢 ${lista.length} resultados encontrados | 💰 Preço médio: ${media.toFixed(0)}€ | Mín: ${min}€ | Máx: ${max}€`;
-    }
-
-    function atualizarGrafico(precos) {
-      const dados = precos
-        .map(p => parseFloat(p.preco.replace(/[^\d,]/g, '').replace(',', '.')))
-        .filter(p => !isNaN(p));
-
-      const bins = {};
-      dados.forEach(p => {
-        const faixa = Math.floor(p / 1000) * 1000;
-        bins[faixa] = (bins[faixa] || 0) + 1;
-      });
-
-      const labels = Object.keys(bins).sort((a, b) => a - b);
-      const valores = labels.map(k => bins[k]);
-
-      if (chart) chart.destroy();
-
-      chart = new Chart(canvas, {
-        type: 'bar',
-        data: {
-          labels: labels.map(l => `${l}€ - ${parseInt(l) + 999}€`),
-          datasets: [{
-            label: 'Nº de anúncios',
-            data: valores,
-            backgroundColor: '#7CBF8B'
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                precision: 0
-              }
-            }
-          }
-        }
-      });
-    }
-
-    function renderCars(filteredData) {
-      container.innerHTML = "";
-      estatisticasBox.innerText = calcularEstatisticas(filteredData);
-      atualizarGrafico(filteredData);
-
-      filteredData.forEach(car => {
-        const item = document.createElement("div");
-        item.innerHTML = `
-          <h3>${car.titulo}</h3>
-          <p><strong>Preço:</strong> ${car.preco || "n/d"}</p>
-          <p><strong>Localização:</strong> ${car.localizacao || "n/d"}</p>
-          <a href="${car.link}" target="_blank">🔗 Ver Anúncio</a>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    renderCars(data);
-
-    searchInput.addEventListener("input", () => {
-      const term = searchInput.value.toLowerCase();
-      const filtered = data.filter(car => car.titulo.toLowerCase().includes(term));
-      renderCars(filtered);
-    });
+  marcas.forEach(marca => {
+    const option = document.createElement("option");
+    option.value = marca;
+    option.textContent = marca;
+    select.appendChild(option);
   });
+
+  select.addEventListener("change", () => mostrarCarros(select.value));
+}
+
+function mostrarCarros(marcaSelecionada) {
+  const divResultados = document.getElementById("resultados");
+  divResultados.innerHTML = "";
+
+  const filtrados = carros
+    .filter(carro => carro.marca === marcaSelecionada)
+    .sort((a, b) => parsePreco(a.preco) - parsePreco(b.preco))
+    .slice(0, 50);
+
+  if (filtrados.length === 0) {
+    divResultados.innerHTML = "<p>Nenhum carro encontrado.</p>";
+    return;
+  }
+
+  filtrados.forEach(carro => {
+    const card = document.createElement("div");
+    card.className = "carro-card";
+    card.innerHTML = `
+      <h3>${carro.titulo}</h3>
+      <p><strong>Preço:</strong> ${carro.preco}</p>
+      <p><strong>Localização:</strong> ${carro.localizacao}</p>
+      <a href="${carro.link}" target="_blank">Ver Anúncio</a>
+    `;
+    divResultados.appendChild(card);
+  });
+}
+
+function parsePreco(precoStr) {
+  return parseFloat(precoStr.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+}
+
+carregarDados();

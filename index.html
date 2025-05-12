@@ -4,45 +4,108 @@
   <meta charset="UTF-8">
   <title>AutoCompara - Comparador de Carros Usados</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin: 20px 0;
+      width: 100%;
+    }
+    .carro-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .carro-card h3 {
+      margin: 0 0 10px 0;
+    }
+    .carro-card p {
+      margin: 5px 0;
+    }
+    .carro-card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007BFF;
+      text-decoration: none;
+    }
+    .carro-card a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <script defer>
+    let carros = [];
+
+    async function carregarDados() {
+      const resposta = await fetch("data.json");
+      carros = await resposta.json();
+
+      const marcas = [...new Set(carros.map(carro => carro.marca))].sort();
+      const select = document.getElementById("marca");
+
+      marcas.forEach(marca => {
+        const option = document.createElement("option");
+        option.value = marca;
+        option.textContent = marca;
+        select.appendChild(option);
+      });
+
+      select.addEventListener("change", () => mostrarCarros(select.value));
+    }
+
+    function mostrarCarros(marcaSelecionada) {
+      const divResultados = document.getElementById("resultados");
+      divResultados.innerHTML = "";
+
+      const filtrados = carros
+        .filter(carro => carro.marca === marcaSelecionada)
+        .sort((a, b) => parsePreco(a.preco) - parsePreco(b.preco))
+        .slice(0, 50);
+
+      if (filtrados.length === 0) {
+        divResultados.innerHTML = "<p>Nenhum carro encontrado.</p>";
+        return;
+      }
+
+      filtrados.forEach(carro => {
+        const card = document.createElement("div");
+        card.className = "carro-card";
+        card.innerHTML = `
+          <h3>${carro.titulo}</h3>
+          <p><strong>Preço:</strong> ${carro.preco}</p>
+          <p><strong>Localização:</strong> ${carro.localizacao}</p>
+          <a href="${carro.link}" target="_blank">Ver Anúncio</a>
+        `;
+        divResultados.appendChild(card);
+      });
+    }
+
+    function parsePreco(precoStr) {
+      return parseFloat(precoStr.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+    }
+
+    window.addEventListener("DOMContentLoaded", carregarDados);
+  </script>
 </head>
 <body>
-
-  <header style="background: linear-gradient(135deg, #7CBF8B, #F2C078); color: white; padding: 50px 20px; text-align: center;">
-    <h1 style="font-size: 2.5rem; margin-bottom: 15px;">Encontre o carro ideal para si</h1>
-    <p style="font-size: 1.2rem; margin-bottom: 25px;">Compare os melhores preços em carros usados em Portugal.</p>
-
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-      <input id="pesquisa" type="text" placeholder="🔍 Procurar por marca ou modelo..."
-             style="padding: 15px; width: 60%; max-width: 500px; border: none; border-radius: 30px; font-size: 1rem;">
-      <!-- Botão ainda sem função, pode ser escondido -->
-      <button style="padding: 15px 25px; border: none; border-radius: 30px; background-color: #E07A5F; color: white; font-weight: bold; cursor: pointer;">
-        Procurar
-      </button>
-    </div>
-
-    <div style="margin-top: 30px;">
-      <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
-        SUV
-      </button>
-      <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
-        Sedan
-      </button>
-      <button style="margin: 5px; padding: 10px 20px; border: 2px solid white; background: transparent; border-radius: 20px; color: white; font-weight: bold;">
-        Elétrico
-      </button>
-    </div>
-  </header>
-
-  <main style="padding: 30px; max-width: 1000px; margin: 0 auto;">
-    <canvas id="graficoPrecos" style="max-width: 800px; margin: 40px auto; display: block;"></canvas>
-
-    <div id="car-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-      <!-- Resultados dos carros aparecem aqui -->
-    </div>
-  </main>
-
-  <script src="main.js"></script>
+  <h1>AutoCompara</h1>
+  <p>Seleciona uma marca para veres os 50 carros mais baratos:</p>
+  <select id="marca">
+    <option value="">Seleciona uma marca</option>
+  </select>
+  <div id="resultados"></div>
 </body>
 </html>
