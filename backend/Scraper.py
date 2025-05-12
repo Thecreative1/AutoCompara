@@ -8,12 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 
 BASE_URL = "https://www.standvirtual.com"
 LISTAGEM_URL = f"{BASE_URL}/carros/"
-MAX_CARROS_POR_MARCA = 50
-TEMPO_ESPERA = 10  # segundos
+MAX_CARROS_POR_MARCA = 100
+TEMPO_ESPERA = 10
 
-# Configurar o browser
+# Setup do Chrome
 options = Options()
-# options.add_argument("--headless")  # descomenta para rodar sem abrir janela
+# options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 driver = webdriver.Chrome(options=options)
@@ -53,11 +53,21 @@ def extrair_detalhes(link):
         titulo = driver.find_element(By.TAG_NAME, "h1").text.strip()
         preco = driver.find_element(By.CSS_SELECTOR, "[class*='offer-price']").text.strip()
 
-        # localização pode não existir em todos, usar try/except
+        # Validar se o preço é válido
+        if preco.lower() in ["n/d", "sob consulta", ""]:
+            return None
+
+        # Localização (tentamos várias formas)
         try:
             localizacao = driver.find_element(By.CSS_SELECTOR, "[class*='seller-contact-location']").text.strip()
         except:
-            localizacao = "Desconhecida"
+            try:
+                localizacao = driver.find_element(By.CSS_SELECTOR, "[class*='location']").text.strip()
+            except:
+                localizacao = ""
+
+        if not localizacao:
+            return None
 
         return {
             "titulo": titulo,
@@ -87,7 +97,6 @@ def main():
                 carros.append(detalhes)
         todos_os_carros.extend(carros)
 
-    # Guardar em JSON
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(todos_os_carros, f, ensure_ascii=False, indent=2)
     print("✅ Dados guardados em data.json")
