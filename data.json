@@ -1,1 +1,37 @@
-[{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/fiat-500-ver-1-0-hybrid-star-ID8PQXHo.html","titulo":"Fiat 500 1.0 Hybrid Star"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/volvo-xc-60-ver-2-0-t8-phev-momentum-awd-ID8POIPd.html","titulo":"Volvo XC 60 2.0 T8 PHEV Momentum AWD"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/toyota-yaris-ver-1-5-hsd-comfort-ID8PPRxy.html","titulo":"Toyota Yaris 1.5 HSD Comfort"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/bmw-x2-ver-25-e-xdrive-pack-m-ID8PPiQ8.html","titulo":"BMW X2 25 e xDrive Pack M"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/renault-captur-ver-1-0-tce-intens-ID8PNm44.html","titulo":"Renault Captur 1.0 TCe Intens"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/volvo-xc-60-ver-2-0-d3-drive-r-design-ID8PR4Iu.html","titulo":"Volvo XC 60 2.0 D3 Drive R-Design"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/audi-a1-ver-1-6-tdi-advance-ID8PQYOS.html","titulo":"Audi A1 1.6 TDI Advance"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/peugeot-308-ver-1-5-bluehdi-style-ID8PQYYF.html","titulo":"Peugeot 308 1.5 BlueHDi Style"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/peugeot-3008-ver-1-5-bluehdi-active-ID8PQZXK.html","titulo":"Peugeot 3008 1.5 BlueHDi Active"},{"preco":"n/d","localizacao":"","link":"https://www.standvirtual.com/carros/anuncio/peugeot-3008-ver-1-5-bluehdi-allure-ID8PQZTZ.html","titulo":"Peugeot 3008 1.5 BlueHDi Allure"}]
+[
+  {
+    "marca": "Dacia",
+    "titulo": "Dacia Sandero 1.0 TCe Comfort",
+    "preco": "8 500 €",
+    "localizacao": "Lisboa",
+    "link": "https://www.standvirtual.com/carros/anuncio/dacia-sandero-1-0-tce-comfort-ID123456.html"
+  },
+  {
+    "marca": "Renault",
+    "titulo": "Renault Clio 1.5 dCi Zen",
+    "preco": "9 200 €",
+    "localizacao": "Porto",
+    "link": "https://www.standvirtual.com/carros/anuncio/renault-clio-1-5-dci-zen-ID234567.html"
+  },
+  {
+    "marca": "Peugeot",
+    "titulo": "Peugeot 208 1.2 PureTech Active",
+    "preco": "10 000 €",
+    "localizacao": "Braga",
+    "link": "https://www.standvirtual.com/carros/anuncio/peugeot-208-1-2-puretech-active-ID345678.html"
+  },
+  {
+    "marca": "Fiat",
+    "titulo": "Fiat Panda 1.0 Hybrid City Life",
+    "preco": "7 800 €",
+    "localizacao": "Coimbra",
+    "link": "https://www.standvirtual.com/carros/anuncio/fiat-panda-1-0-hybrid-city-life-ID456789.html"
+  },
+  {
+    "marca": "Opel",
+    "titulo": "Opel Corsa 1.2 Edition",
+    "preco": "8 900 €",
+    "localizacao": "Faro",
+    "link": "https://www.standvirtual.com/carros/anuncio/opel-corsa-1-2-edition-ID567890.html"
+  }
+]

@@ -8,12 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 
 BASE_URL = "https://www.standvirtual.com"
 LISTAGEM_URL = f"{BASE_URL}/carros/"
-MAX_CARROS_POR_MARCA = 5  # para debug rápido
+MAX_CARROS_POR_MARCA = 5
 TEMPO_ESPERA = 20
 
 # Setup do Chrome
 options = Options()
-# options.add_argument("--headless=new")  # descomenta quando quiseres modo silencioso
+# options.add_argument("--headless=new")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 driver = webdriver.Chrome(options=options)
@@ -21,25 +21,32 @@ wait = WebDriverWait(driver, TEMPO_ESPERA)
 
 def obter_marcas():
     driver.get(LISTAGEM_URL)
-    print("🔍 Página carregada, aguardando...")
+    print("🔍 Página carregada... a aguardar por conteúdo JS...")
 
-    time.sleep(5)  # garantir que o JS terminou
+    time.sleep(5)  # espera para garantir carregamento total
 
-    # salvar HTML da página para debug
+    # salvar HTML da página para inspeção
     with open("pagina_debug_final.html", "w", encoding="utf-8") as f:
         f.write(driver.page_source)
     print("💾 HTML salvo como pagina_debug_final.html")
 
-    # tentativa de extrair links de marcas
+    # encontrar todos os <a>
     elementos = driver.find_elements(By.TAG_NAME, "a")
     marcas = []
     for el in elementos:
         href = el.get_attribute("href")
         texto = el.text.strip()
-        if href and "/carros/" in href and texto and texto.isalpha():
-            marcas.append((texto, href))
-    print(f"✅ Detetadas {len(marcas)} marcas candidatas.")
-    return marcas[:10]  # limitar para teste rápido
+
+        if not href or not texto:
+            continue
+
+        if "/carros/" in href and "anuncio" not in href:
+            texto_sem_espacos = texto.replace(" ", "").replace("-", "")
+            if texto_sem_espacos.isalpha() and len(texto) > 1:
+                marcas.append((texto, href))
+
+    print(f"✅ Encontradas {len(marcas)} marcas candidatas.")
+    return marcas[:10]
 
 def main():
     marcas = obter_marcas()
