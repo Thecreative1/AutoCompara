@@ -27,10 +27,14 @@ public class Scraper {
                     link = "https://www.standvirtual.com" + link;
                 }
 
+                // ⬇️ NOVO: Extração do preço
+                String preco = anuncio.select("div[data-testid=advert-price]").text();
+
                 if (!titulo.isEmpty()) {
                     HashMap<String, String> carro = new HashMap<>();
                     carro.put("titulo", titulo);
                     carro.put("preco", preco);
+                    carro.put("localizacao", local);
                     carro.put("link", link);
                     carros.add(carro);
                 }
