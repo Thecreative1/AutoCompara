@@ -53,6 +53,13 @@
       const resposta = await fetch("data.json");
       carros = await resposta.json();
 
+      // Atribuir marca com base no título, se marca não existir
+      carros.forEach(carro => {
+        if (!carro.marca) {
+          carro.marca = carro.titulo.split(" ")[0];
+        }
+      });
+
       const marcas = [...new Set(carros.map(carro => carro.marca))].sort();
       const select = document.getElementById("marca");
 
