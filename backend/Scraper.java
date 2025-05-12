@@ -21,7 +21,7 @@ public class Scraper {
 
             for (Element anuncio : anuncios) {
                 String titulo = anuncio.select("h2").text();
-                String preco = anuncio.select("div[data-testid=ad-price]").text();
+                String local = anuncio.select("span[data-testid=location-text]").text();
                 String link = anuncio.select("a").attr("href");
                 if (!link.startsWith("http")) {
                     link = "https://www.standvirtual.com" + link;
